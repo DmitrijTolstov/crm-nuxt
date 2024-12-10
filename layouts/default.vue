@@ -1,8 +1,32 @@
 <script setup>
+import { account } from '@/utils/appwrite';
+import { useAuthStore, isLoading } from '@/store/auth.store';
+
+const loading = isLoading()
+const authStore = useAuthStore()
+const router = useRouter()
+
+onMounted(async () => {
+	try {
+		const user = await account.get()
+
+		if (user) {
+			console.log(user);
+			authStore.set(user)
+		}
+
+	} catch (err) {
+		router.push('/login')
+	} finally {
+		loading.set(false)
+	}
+})
+
 </script>
 <template>
-	<section class="grid">
-		<LayoutSidebar />
+	<LayoutLoader v-if="loading.loading" />
+	<section v-else :class="{ 'grid': authStore.isAuth }">
+		<LayoutSidebar v-if='authStore.isAuth' />
 		<slot />
 	</section>
 </template>
