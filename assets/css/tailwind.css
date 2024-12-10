@@ -17,8 +17,8 @@
     --card-foreground: 222.2 84% 4.9%;
 
     --border: #202937;
-    --input: 214.3 31.8% 91.4%;
-    --sidebar: #0e172a;
+    --input: #202937;
+    --sidebar: #010e2b;
 
     --primary: #a252c8;
     --primary-foreground: #f5f5f5;
@@ -43,7 +43,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground text-base;
     font-family: 'Lato', sans-serif;
   }
 }
