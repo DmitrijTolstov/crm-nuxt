@@ -1,7 +1,7 @@
 import type {EnumStatus} from '@/types/deals.types.ts'
 
 export interface ICard {
-	if: string,
+	id: string,
 	price:string,
 	name: string,
 	companyName:string,

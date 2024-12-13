@@ -24,10 +24,10 @@ export enum EnumStatus {
 }
 
 
-export interface IDeal extends IBaseField {
+export interface IDeals extends IBaseField {
 	comments: IComment[],
 	customers: ICustomer,
 	name: string,
-	price: number,
+	price: string,
 	status: EnumStatus
 }
