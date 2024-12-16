@@ -2,9 +2,8 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: false },
   modules: [
-    '@nuxtjs/tailwindcss',
+    '@nuxt/ui',
     'shadcn-nuxt',
-    '@nuxtjs/color-mode',
     '@nuxt/image',
     ['@nuxtjs/google-fonts',{
         families: {
@@ -21,7 +20,7 @@ export default defineNuxtConfig({
       {
         autoImports:true
       }
-    ]
+    ],
   ],
    shadcn: {
     prefix: 'Ui',
