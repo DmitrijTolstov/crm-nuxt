@@ -6,6 +6,7 @@ import CreateDeal from '~/components/kanban/CreateDeal.vue';
 import type { EnumStatus } from '~/types/deals.types';
 import { useMutation } from '@tanstack/vue-query';
 import { COLLECTION_DEALS, DB_ID } from '~/app.constants';
+import { gradientFunction } from '~/components/kanban/gradient';
 
 useSeoMeta({
 	title: 'Home | CRM System'
@@ -55,8 +56,9 @@ function handleDrop(targetColumn: IColumn) {
 		<div v-if='isLoading'>Loading...</div>
 		<div v-else>
 			<div class='grid grid-cols-5 gap-16'>
-				<div v-for='(column) in data' @dragover.prevent @drop='handleDrop(column)'>
-					<div class='rounded bg-slate-700 py-1 px-5 mb-2 text-center text-nowrap'>
+				<div v-for='(column, ind) in data' @dragover.prevent @drop='handleDrop(column)'>
+					<div class='rounded bg-slate-700 py-1 px-5 mb-2 text-center text-nowrap'
+						:style='{ backgroundColor: gradientFunction(ind, data?.length) }'>
 						{{ column.name }}
 					</div>
 					<CreateDeal :refetch='refetch' :status='column.id' />
