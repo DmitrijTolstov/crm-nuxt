@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: #0b1120;
+    --background: rgb(11, 17, 32);
     --foreground: #ffffff;
 
     --muted: #3f4349;
@@ -35,6 +35,8 @@
     --ring: #202937;
 
     --radius: 0.5rem;
+
+    --overlay: rgba(11, 17, 32, 0.75);
   }
 }
 
