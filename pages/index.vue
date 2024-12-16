@@ -7,6 +7,7 @@ import type { EnumStatus } from '~/types/deals.types';
 import { useMutation } from '@tanstack/vue-query';
 import { COLLECTION_DEALS, DB_ID } from '~/app.constants';
 import { gradientFunction } from '~/components/kanban/gradient';
+import { overSlide } from '@/store/overSlide.store';
 
 useSeoMeta({
 	title: 'Home | CRM System'
@@ -49,6 +50,8 @@ function handleDrop(targetColumn: IColumn) {
 	}
 }
 
+const store = overSlide()
+
 </script>
 <template>
 	<div class="p-10">
@@ -65,7 +68,8 @@ function handleDrop(targetColumn: IColumn) {
 					<div>
 						<UiCard draggable='true' @dragstart='handleCardStart(card, column)'
 							v-for='card in column.items ' class='mb-3'>
-							<UiCardHeader role='button'>
+							<UiCardHeader role='button' @click='store.set(card)'>
+
 								<UiCardTitle>{{ card.name }}</UiCardTitle>
 
 								<UiCardDescription role='button'>{{ card.price }} ₽</UiCardDescription>
@@ -77,6 +81,7 @@ function handleDrop(targetColumn: IColumn) {
 					</div>
 				</div>
 			</div>
+			<KanbanSliderOver />
 
 		</div>
 	</div>
