@@ -1,11 +1,17 @@
 <script lang='ts' setup>
-
+import { storage } from '@/utils/appwrite';
 import { useMutation, useQuery } from '@tanstack/vue-query';
-import { COLLECTION_CUSTOMERS, DB_ID } from '~/app.constants';
+import { COLLECTION_CUSTOMERS, DB_ID, STORAGE_ID } from '~/app.constants';
+import { v4 as uuid } from 'uuid'
 import type { ICustomer } from '~/types/deals.types';
 
 
 interface ICustomerFormState extends Pick<ICustomer, 'email' | 'avatar_url' | 'name' | 'from_source'> { }
+
+interface IInputFileEvent extends Event {
+	target: HTMLInputElement
+}
+
 
 useSeoMeta({
 	title: 'Редактирование компании'
@@ -46,8 +52,19 @@ const { mutate, isPending } = useMutation({
 })
 
 
-const submit = handleSubmit(value => {
-	mutate(value)
+const { mutate: isuploadImage, isPending: isUploadPendingImage } = useMutation({
+	mutationKey: ['upload image'],
+	mutationFn: (file: File) => storage.createFile(STORAGE_ID, uuid(), file),
+	onSuccess: (data) => {
+		const response = storage.getFileDownload(STORAGE_ID, data.$id)
+		setFieldValue('avatar_url', response)
+	}
+})
+
+const submit = handleSubmit(values => {
+	console.log(values);
+
+	mutate(values)
 })
 
 const title = data?.value?.name as unknown as ICustomerFormState['name']
@@ -66,6 +83,16 @@ const title = data?.value?.name as unknown as ICustomerFormState['name']
 			</UiInput>
 			<UiInput placeholder='Откуда пришел?' v-model='fromSource' type='text' class='input'>
 			</UiInput>
+			<img v-if='values.avatar_url || isUploadPendingImage' :src="values.avatar_url" width='50' height='50'
+				class='rounded-full py-2' alt="">
+			<div class='grid  max-w-sm items-center gap-1.5 input '>
+				<label>
+					<div class='text-sm mb-2 '>Логотип</div>
+					<UiInput type='file'
+						:onchange='(e: IInputFileEvent) => e?.target?.files?.length && isuploadImage(e.target.files[0])'
+						:disabled='isUploadPendingImage' />
+				</label>
+			</div>
 
 			<UiButton :disabled='isPending' class='mt-3' variant='secondary'>
 				{{ isPending ? 'Загрузка...' : 'Сохранить' }}
@@ -75,6 +102,6 @@ const title = data?.value?.name as unknown as ICustomerFormState['name']
 </template>
 <style scoped>
 .input {
-	@apply border-[#161c26] mb-2 placeholder:text-[#748092] focus:border-border transition-colors;
+	@apply border-[#161c26] mb-2 placeholder:text-[#857272e7] focus:border-border transition-colors;
 }
 </style>
